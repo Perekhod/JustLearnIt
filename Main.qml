@@ -1,11 +1,14 @@
+/*Main.qml*/
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
+import com.example 1.0
 
 ApplicationWindow {
     id: window
-    width: 800
-    height: 600
+    width: 850
+    height: 700
     visible: true
     title: "Vocabulary Trainer"
 
@@ -13,41 +16,25 @@ ApplicationWindow {
         id: cardsModel
     }
 
-    FileDialog {
-        id: fileDialog
-        title: "Select an image"
-        nameFilters: ["Image files (*.png *.jpg *.jpeg)"]
-        onAccepted: {
-            addDialog.open()
-        }
+    Component.onCompleted: {
+        imageLoader.setImageFolder("C:/Users/USER/Documents/JustLearnIt!/JustLearnIt/pictures")
     }
 
-    Dialog {
-        id: addDialog
-        title: "Add New Card"
-        anchors.centerIn: parent
-        standardButtons: Dialog.Ok | Dialog.Cancel
-
-        property string imagePath: ""
-        property string englishWord: ""
-
-        Column {
-            spacing: 10
-            TextField {
-                id: wordInput
-                placeholderText: "Enter English word"
-            }
-        }
-
-        onAccepted: {
-            cardsModel.append({
-                "imagePath": fileDialog.selectedFile,
-                "word": wordInput.text,
-                "showWord": true,
-                "userAnswer": "",
-                "resultVisible": false
-            })
-            wordInput.text = ""
+    Connections {
+        target: imageLoader
+        function onImagesChanged() {
+            cardsModel.clear()
+            for (var i = 0; i < imageLoader.images.length; i++) {
+                var imagePath = imageLoader.images[i]
+                var fileName = imagePath.split("/").pop().split(".")[0]
+                cardsModel.append({
+                              "imagePath"     : imagePath,
+                              "word"          : fileName,
+                              "showWord"      : true,
+                              "userAnswer"    : "",
+                              "resultVisible" : false
+                                })
+                console.log("Added card:", imagePath,fileName)
         }
     }
 
@@ -61,14 +48,5 @@ ApplicationWindow {
             delegate: CardDelegate {}
         }
     }
-
-    Button {
-        anchors {
-            bottom: parent.bottom
-            horizontalCenter: parent.horizontalCenter
-            margins: 20
-        }
-        text: "Add New Card"
-        onClicked: fileDialog.open()
     }
 }

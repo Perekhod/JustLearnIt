@@ -1,3 +1,5 @@
+// CardDelegate.qml
+
 import QtQuick
 import QtQuick.Controls
 
@@ -5,9 +7,12 @@ Item {
     width: SwipeView.view.width
     height: SwipeView.view.height
 
-    property bool showWord: model.showWord
-    property string resultText: ""
-    property bool resultVisible: model.resultVisible
+    // Свойства, которые должны быть в cardsModel
+    property string imagePath: model.imagePath // Путь к картинке
+    property string word: model.word           // Название картинки
+    property bool showWord: model.showWord     // Видимость текста
+    property string userAnswer: model.userAnswer // Ответ пользователя
+    property bool resultVisible: model.resultVisible // Видимость результата
 
     Column {
         anchors.centerIn: parent
@@ -15,7 +20,7 @@ Item {
 
         Image {
             id: cardImage
-            source: model.imagePath
+            source: imagePath // Используем imagePath из модели
             width: 400
             height: 300
             fillMode: Image.PreserveAspectFit
@@ -23,9 +28,9 @@ Item {
 
         Label {
             id: wordLabel
-            text: model.word
+            text: word // Используем word из модели
             font.pixelSize: 32
-            visible: showWord
+            visible: showWord // Используем showWord из модели
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -35,7 +40,7 @@ Item {
             placeholderText: "Type the word here"
             font.pixelSize: 24
             anchors.horizontalCenter: parent.horizontalCenter
-            onTextChanged: model.userAnswer = text
+            onTextChanged: userAnswer = text // Обновляем userAnswer
         }
 
         Button {
@@ -43,19 +48,19 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             onClicked: {
                 if (showWord) {
-                    model.showWord = false
-                    model.resultVisible = false
+                    showWord = false
+                    resultVisible = false
                 } else {
-                    model.resultVisible = true
-                    model.showWord = true
+                    resultVisible = true
+                    showWord = true
                 }
             }
         }
 
         Label {
-            text: model.userAnswer === model.word ? "Correct!" : "Wrong! Correct answer: " + model.word
-            color: model.userAnswer === model.word ? "green" : "red"
-            visible: model.resultVisible
+            text: userAnswer === word ? "Correct!" : "Wrong! Correct answer: " + word
+            color: userAnswer === word ? "green" : "red"
+            visible: resultVisible
             font.pixelSize: 24
             anchors.horizontalCenter: parent.horizontalCenter
         }

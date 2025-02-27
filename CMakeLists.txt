@@ -18,7 +18,7 @@ qt_add_qml_module(appJustLearnIt
     QML_FILES
         Main.qml
         QML_FILES CardDelegate.qml
-        RESOURCES pictures/programmer.jpg
+        SOURCES imageloader.h imageloader.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
