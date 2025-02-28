@@ -1,5 +1,4 @@
-/*Main.qml*/
-
+// Main.qml
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
@@ -12,11 +11,14 @@ ApplicationWindow {
     visible: true
     title: "Vocabulary Trainer"
 
+    property var imageLoader: ImageLoader {}
+
     ListModel {
         id: cardsModel
     }
 
     Component.onCompleted: {
+        console.log("Setting image folde...")
         imageLoader.setImageFolder("C:/Users/USER/Documents/JustLearnIt!/JustLearnIt/pictures")
     }
 
@@ -25,28 +27,24 @@ ApplicationWindow {
         function onImagesChanged() {
             cardsModel.clear()
             for (var i = 0; i < imageLoader.images.length; i++) {
-                var imagePath = imageLoader.images[i]
+                var imagePath = "file:///" + imageLoader.images[i]
                 var fileName = imagePath.split("/").pop().split(".")[0]
                 cardsModel.append({
-                              "imagePath"     : imagePath,
-                              "word"          : fileName,
-                              "showWord"      : true,
-                              "userAnswer"    : "",
-                              "resultVisible" : false
-                                })
-                console.log("Added card:", imagePath,fileName)
+                    "imagePath": imagePath,
+                    "word": fileName,
+                    "showWord": true,
+                    "userAnswer": "",
+                    "resultVisible": false
+                })
+                console.log("Added card:", imagePath, fileName)
+            }
         }
     }
 
-    SwipeView {
-        id: swipeView
+
+    ListView  {
         anchors.fill: parent
-        currentIndex: 0
-
-        Repeater {
-            model: cardsModel
-            delegate: CardDelegate {}
-        }
-    }
+        model: cardsModel
+        delegate: CardDelegate {}
     }
 }

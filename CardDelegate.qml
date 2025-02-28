@@ -4,15 +4,14 @@ import QtQuick
 import QtQuick.Controls
 
 Item {
-    width: SwipeView.view.width
-    height: SwipeView.view.height
+    width: ListView.view.width
+    height: ListView.view.height
 
-    // Свойства, которые должны быть в cardsModel
-    property string imagePath: model.imagePath // Путь к картинке
-    property string word: model.word           // Название картинки
-    property bool showWord: model.showWord     // Видимость текста
-    property string userAnswer: model.userAnswer // Ответ пользователя
-    property bool resultVisible: model.resultVisible // Видимость результата
+    property string imagePath: model.imagePath
+    property string word: model.word
+    property bool showWord: model.showWord
+    property string userAnswer: model.userAnswer
+    property bool resultVisible: model.resultVisible
 
     Column {
         anchors.centerIn: parent
@@ -20,17 +19,17 @@ Item {
 
         Image {
             id: cardImage
-            source: imagePath // Используем imagePath из модели
+            source: imagePath
             width: 400
             height: 300
-            fillMode: Image.PreserveAspectFit
+            //fillMode: Image.PreserveAspectFit
         }
 
         Label {
             id: wordLabel
-            text: word // Используем word из модели
+            text: word
             font.pixelSize: 32
-            visible: showWord // Используем showWord из модели
+            visible: showWord
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -40,7 +39,7 @@ Item {
             placeholderText: "Type the word here"
             font.pixelSize: 24
             anchors.horizontalCenter: parent.horizontalCenter
-            onTextChanged: userAnswer = text // Обновляем userAnswer
+            onTextChanged: userAnswer = text
         }
 
         Button {

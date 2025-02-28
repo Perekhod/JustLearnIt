@@ -6,7 +6,6 @@
 ImageLoader::ImageLoader(QObject *parent)
     : QObject(parent)
 {
-    // Подключаем сигнал изменения папки к слоту перезагрузки картинок
     connect(&m_watcher, &QFileSystemWatcher::directoryChanged, this, &ImageLoader::reloadImages);
 }
 
@@ -19,14 +18,19 @@ void ImageLoader::setImageFolder(const QString &folder)
 {
     if (m_dir.path() != folder) {
         m_dir.setPath(folder);
-        m_watcher.addPath(folder); // Начинаем следить за папкой
-        reloadImages(); // Перезагружаем картинки
+        m_watcher.addPath(folder);
+        reloadImages();
     }
 }
 
 void ImageLoader::reloadImages()
 {
-    m_images = m_dir.entryList(QStringList() << "*.jpg" << "*.png", QDir::Files); // Фильтруем по расширениям
-    qDebug() << "Loaded images:" << m_images; // Отладочный вывод
-    emit imagesChanged(); // Испускаем сигнал
+    QStringList fileNames = m_dir.entryList(QStringList() << "*.jpg" << "*.png", QDir::Files);
+    m_images.clear();
+    for (const QString &fileName : fileNames) {
+        // Добавляем полный путь к файлу
+        m_images.append(m_dir.absoluteFilePath(fileName));
+    }
+    qDebug() << "Loaded images:" << m_images; // Логирование полных путей
+    emit imagesChanged();
 }

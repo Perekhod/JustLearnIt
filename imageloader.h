@@ -11,25 +11,23 @@
 class ImageLoader : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QStringList images READ images NOTIFY imagesChanged) // Свойство для QML
+    Q_PROPERTY(QStringList images READ images NOTIFY imagesChanged)
 
 public:
     explicit ImageLoader(QObject *parent = nullptr);
-
-    QStringList images() const; // Геттер для списка картинок
-
-    Q_INVOKABLE void setImageFolder(const QString &folder); // Метод для установки папки
+    QStringList images() const;
+    Q_INVOKABLE void setImageFolder(const QString &folder);
 
 signals:
-    void imagesChanged(); // Сигнал должен быть объявлен здесь
+    void imagesChanged();
 
 private slots:
-    void reloadImages(); // Перезагрузка картинок при изменении папки
+    void reloadImages();
 
 private:
-    QDir m_dir; // Папка с картинками
-    QFileSystemWatcher m_watcher; // Наблюдатель за изменениями в папке
-    QStringList m_images; // Список картинок
+    QDir m_dir;
+    QFileSystemWatcher m_watcher;
+    QStringList m_images;
 };
 
 #endif // IMAGELOADER_H
