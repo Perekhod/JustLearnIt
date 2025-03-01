@@ -4,8 +4,8 @@ import QtQuick
 import QtQuick.Controls
 
 Item {
-    width: ListView.view.width
-    height: ListView.view.height
+    width: SwipeView.view.width
+    height: SwipeView.view.height
 
     property string imagePath: model.imagePath
     property string word: model.word

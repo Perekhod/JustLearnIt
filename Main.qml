@@ -18,7 +18,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        console.log("Setting image folde...")
+        console.log("Setting image folder...")
         imageLoader.setImageFolder("C:/Users/USER/Documents/JustLearnIt!/JustLearnIt/pictures")
     }
 
@@ -41,10 +41,15 @@ ApplicationWindow {
         }
     }
 
-
-    ListView  {
+    SwipeView {
+        id: swipeView
         anchors.fill: parent
-        model: cardsModel
-        delegate: CardDelegate {}
+        currentIndex: 0
+        interactive: true
+
+        Repeater {
+            model: cardsModel
+            delegate: CardDelegate {}
+        }
     }
 }
